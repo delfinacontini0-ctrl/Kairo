@@ -66,6 +66,61 @@ body.pagina-home {
   padding-top: 0;
 }
 
+/* ---------- Cursor personalizado ----------
+   Círculo que sigue al mouse: verde oscuro (var(--tinta)) por defecto,
+   y claro (var(--crema)) sobre las zonas donde ese verde no contrasta
+   (el hero, las bandas de categorías, el bloque salvia de
+   personalizados) — los mismos lugares del sitio que ya usan texto
+   claro por el motivo inverso. script.js decide la zona con
+   elementFromPoint y suma/saca .cursor-claro.
+   Solo en dispositivos con mouse: en touch no hay cursor que seguir,
+   y forzar cursor:none ahí rompería el tap. */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button,
+  .btn-menu,
+  .categoria,
+  .footer-logo {
+    cursor: none;
+  }
+
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--tinta);
+    pointer-events: none;
+    z-index: 2000;
+    /* La posición (translate x,y) la pisa script.js en cada mousemove
+       con transform inline; el -50%,-50% de ahí ya recentra el punto
+       sobre el cursor sea cual sea su tamaño actual, así que agrandarlo
+       en hover es solo cuestión de animar width/height, sin tocar
+       transform ni pelearse con el inline de la posición. */
+    opacity: 0; /* script.js lo pasa a 1 en el primer mousemove, para que no se vea "flashear" en la esquina antes de eso */
+    transition: background-color 0.25s var(--suave), opacity 0.2s var(--suave),
+      width 0.2s var(--suave), height 0.2s var(--suave);
+  }
+
+  .cursor-dot.cursor-claro {
+    background-color: var(--crema);
+  }
+
+  /* Más chico sobre cualquier cosa clickeable, para diferenciarlo de
+     las zonas donde el punto es solo decorativo. */
+  .cursor-dot.cursor-clickable {
+    width: 8px;
+    height: 8px;
+  }
+
+  .cursor-dot.cursor-visible {
+    opacity: 1;
+  }
+}
+
 /* Las imágenes nunca se desbordan de su contenedor */
 img {
   max-width: 100%;
@@ -104,9 +159,23 @@ img {
 .btn-menu .hamburger-icon {
   display: block;
   width: 24px;
-  height: auto;
-  object-fit: contain;
-  transition: transform 0.18s var(--suave), filter 0.35s var(--suave);
+  /* Proporción de hamburguesa.svg (36/21); script.js la actualiza a la
+     de cruz.svg (28/26) al abrir el menú, junto con el mask-image. */
+  aspect-ratio: 36 / 21;
+  /* background-color + mask-image en vez de <img src>: permite pintar
+     el ícono con currentColor/var(...) exacto (acá, var(--tinta) o
+     var(--crema) según el estado del header) sin necesitar una
+     segunda versión del svg en otro color. */
+  background-color: var(--tinta);
+  -webkit-mask-image: url('../svg/hamburguesa.svg');
+  mask-image: url('../svg/hamburguesa.svg');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  transition: transform 0.18s var(--suave), background-color 0.35s var(--suave);
   transform: translateZ(0);
 }
 .btn-menu.open .hamburger-icon {
@@ -129,7 +198,16 @@ img {
   display: none;
   width: 44px;
   height: 44px;
-  transition: filter 0.35s var(--suave);
+  background-color: var(--tinta);
+  -webkit-mask-image: url('../svg/logo.svg');
+  mask-image: url('../svg/logo.svg');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  transition: background-color 0.35s var(--suave);
 }
 
 .nav-header {
@@ -227,12 +305,7 @@ img {
 
 .pagina-home .header:not(.header-solido):not(.nav-open) .logo-mark,
 .pagina-home .header:not(.header-solido):not(.nav-open) .hamburger-icon {
-  /* Los svg son monocromos (#5C6D52 fijo en el archivo), así que no se
-     pueden recolorear con color/currentColor. invert(92%) sobre negro
-     puro (brightness(0) primero) da rgb(235,235,235) — el mismo tono
-     que #EBEBDD salvo 14/255 en el canal azul, imperceptible en un
-     ícono chico; evita duplicar cada svg en una versión clara. */
-  filter: brightness(0) invert(92%);
+  background-color: var(--crema);
 }
 
 /* Hover sobre la barra (solo dispositivos con mouse): mientras el header
@@ -254,7 +327,7 @@ img {
 
   .pagina-home .header:not(.nav-open):hover .logo-mark,
   .pagina-home .header:not(.nav-open):hover .hamburger-icon {
-    filter: none;
+    background-color: var(--tinta);
   }
 }
 
@@ -491,7 +564,11 @@ img {
 /* ---------- PÁGINA COLLARES ---------- */
 
 .collares-main {
-  height: calc(100vh - 88px);
+  /* dvh (no vh): en mobile, vh incluye el alto que tapa la barra del
+     navegador, así que 100vh mide más de lo que realmente se ve y
+     empuja el CTA fuera de pantalla. dvh se ajusta al viewport visible
+     real. */
+  height: calc(100dvh - 88px);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -619,6 +696,11 @@ img {
   word-spacing: 1.2em;
   text-transform: uppercase;
   white-space: normal;
+  /* Con white-space:normal el texto puede pasar a dos líneas en mobile;
+     sin esto, la caja queda centrada por el flex del padre pero cada
+     línea se alinea a la izquierda dentro de esa caja. Una sola regla,
+     vale para las 4 páginas y para cualquier ancho. */
+  text-align: center;
   position: relative;
   display: inline-block;
   transition: color 0.12s ease;
@@ -656,7 +738,13 @@ img {
 
 @keyframes entrada-fila {
   from { opacity: 0; transform: translateY(15px); }
-  to   { opacity: 1; transform: translateY(0); }
+  /* "none" en vez de "translateY(0)": con animation-fill-mode:both este
+     valor final queda aplicado para siempre, y translateY(0) (aunque
+     visualmente igual a no tener transform) sigue siendo un transform
+     real — eso convierte al elemento en containing block de cualquier
+     descendiente position:fixed (rompía el overlay mobile en el header
+     del home, el único caso acá con un fixed adentro: .nav-header). */
+  to   { opacity: 1; transform: none; }
 }
 
 /* La galería anima transform, y transform ya lo usa el resaltado
@@ -692,13 +780,29 @@ img {
   animation-name: entrada-pieza-highlighted;
 }
 
-/* Una vez que la animación de entrada terminó, script.js agrega esta
-   clase (evento "animationend") para desactivarla del todo. Sin esto,
-   como .highlighted se prende y apaga con cada scroll de la galería,
-   el navegador detecta el cambio de animation-name (entre las dos
-   de arriba) y la vuelve a arrancar desde 0 en cada foto que pasa a
-   estar destacada — la entrada tiene que pasar una sola vez, al cargar. */
-.galeria-pieza.entrada-lista {
+/* Una vez que una animación de entrada terminó, script.js agrega esta
+   clase (evento "animationend") para desactivarla del todo — sin
+   scope a un elemento particular, la reutilizan .galeria-pieza,
+   .header-entrada, .hero e .intro.
+   Para la galería: sin esto, como .highlighted se prende y apaga con
+   cada scroll, el navegador detecta el cambio de animation-name (entre
+   las dos de arriba) y la vuelve a arrancar desde 0 en cada foto que
+   pasa a estar destacada.
+   Para .header-entrada: aunque el keyframe termina en "transform: none",
+   mientras la animación sigue activa (fill-mode:both la sostiene para
+   siempre) el navegador reporta ese transform como una matriz resuelta,
+   no como el string "none" — y eso alcanza para volver al header
+   containing block de su hijo position:fixed (.nav-header), rompiendo
+   el overlay mobile a pantalla completa. Sacar la animation del todo
+   evita ese efecto colateral. */
+/* Selectores compuestos (no ".entrada-lista" solo): así la especificidad
+   le gana siempre a la regla que puso el animation-name original, sin
+   importar el orden en el archivo (con una sola clase quedaban empatadas
+   en especificidad y ganaba la que estuviera más abajo). */
+.galeria-pieza.entrada-lista,
+.header-entrada.entrada-lista,
+.hero.entrada-lista,
+.intro.entrada-lista {
   animation: none;
 }
 
@@ -710,6 +814,7 @@ img {
 .galeria-pieza:nth-child(6) { animation-delay: 590ms; }
 .galeria-pieza:nth-child(7) { animation-delay: 660ms; }
 .galeria-pieza:nth-child(8) { animation-delay: 730ms; }
+.galeria-pieza:nth-child(9) { animation-delay: 800ms; }
 
 .collares-cta {
   animation: entrada-fila 0.6s var(--suave) both;
@@ -811,19 +916,25 @@ img {
     padding: 0;
     border: 0;
     z-index: 1400;
-    opacity: 0;
+    /* El fondo tiene que quedar opaco siempre — nada de opacity acá,
+       porque de lo contrario el crema se ve semitransparente durante
+       la transición y se mezcla con la foto del hero de atrás. La
+       entrada/salida se resuelve con visibility (instantáneo) + el
+       transform, y el fade suave lo aportan los links de más abajo. */
+    visibility: hidden;
     pointer-events: none;
     transform: translateY(8px);
-    transition: opacity 0.35s var(--suave), transform 0.35s var(--suave);
+    transition: visibility 0s linear 0.35s, transform 0.35s var(--suave);
   }
 
   /* ensure hamburger sits above the overlay */
   .btn-menu { z-index: 1500; }
 
   .header.nav-open .nav-header {
-    opacity: 1;
+    visibility: visible;
     pointer-events: auto;
     transform: none;
+    transition: visibility 0s linear 0s, transform 0.35s var(--suave);
   }
 
   /* menu links style & subtle staggered reveal */
@@ -901,14 +1012,16 @@ img {
   }
 
   #foto-principal {
-    height: 70vh;
+    height: 70dvh;
     object-fit: cover;
     object-position: center;
   }
 
-  /* Collares mobile */
+  /* Collares mobile: paddings verticales comprimidos (empezando por los
+     más grandes: header y CTA) para que el link de consultar entre en
+     el viewport sin scroll — sin tocar el alto de las fotos. */
   .collares-header {
-    padding: 50px 0 40px;
+    padding: 24px 0 12px;
   }
 
   .collares-header-grid {
@@ -937,7 +1050,7 @@ img {
   }
 
   .collares-descripcion {
-    padding: 0 8vw 40px;
+    padding: 0 8vw 16px;
   }
 
   .collares-descripcion p {
@@ -949,7 +1062,7 @@ img {
     /* mitad del ancho mobile: (alto_mobile 340px * 4/5 = 272px) => /2 = 136px */
     padding-left: calc(50vw - 136px);
     padding-right: calc(50vw - 136px);
-    padding-top: 28px;
+    padding-top: 14px;
     align-items: flex-end;
     overflow-y: visible;
   }
@@ -961,7 +1074,7 @@ img {
   }
 
   .collares-cta {
-    padding: 30px 8vw 60px;
+    padding: 16px 8vw 24px;
   }
 
   .consultar-pieza {

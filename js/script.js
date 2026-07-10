@@ -68,6 +68,19 @@ document.addEventListener('DOMContentLoaded', function () {
     targets.forEach(el => observer.observe(el));
   }
 
+  // Header/hero/intro (home): apagar su animation apenas termina (ver
+  // .entrada-lista en estilos.css). No es solo prolijidad: mientras la
+  // animation sigue activa, animation-fill-mode:both sostiene el
+  // transform final para siempre, y el navegador lo reporta como una
+  // matriz en vez del string "none" — eso vuelve al header containing
+  // block de su .nav-header (position:fixed), rompiendo el overlay
+  // mobile a pantalla completa.
+  document.querySelectorAll('.header-entrada, .hero, .intro').forEach(el => {
+    el.addEventListener('animationend', () => {
+      el.classList.add('entrada-lista');
+    }, { once: true });
+  });
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
   };
@@ -113,6 +126,19 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ---------- Menú hamburguesa mobile ---------- */
+  // El ícono es un <span> pintado con mask-image (background-color +
+  // mask, ver .hamburger-icon en estilos.css) en vez de <img src>, para
+  // poder colorearlo exacto (var(--tinta)/var(--crema)) según el estado
+  // del header. Como ya no hay <img> con su propio ratio intrínseco,
+  // hay que setear a mano el mask-image Y el aspect-ratio de cada svg
+  // (hamburguesa.svg es 36/21, cruz.svg es 28/26).
+  function setHamburgerIcon(icon, open) {
+    const url = open ? "url('svg/cruz.svg')" : "url('svg/hamburguesa.svg')";
+    icon.style.maskImage = url;
+    icon.style.webkitMaskImage = url;
+    icon.style.aspectRatio = open ? '28 / 26' : '36 / 21';
+  }
+
   const menuButtons = Array.from(document.querySelectorAll('.btn-menu'));
   menuButtons.forEach(btn => {
     const header = btn.closest('.header');
@@ -128,9 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.style.overflow = willOpen ? 'hidden' : '';
 
       const icon = btn.querySelector('.hamburger-icon');
-      if (icon) {
-        icon.src = willOpen ? 'svg/cruz.svg' : 'svg/hamburguesa.svg';
-      }
+      if (icon) setHamburgerIcon(icon, willOpen);
     });
     // Cerrar al tocar un link
     links.forEach(link => link.addEventListener('click', () => {
@@ -141,9 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.style.overflow = '';
 
       const icon = btn.querySelector('.hamburger-icon');
-      if (icon) {
-        icon.src = 'svg/hamburguesa.svg';
-      }
+      if (icon) setHamburgerIcon(icon, false);
     }));
   });
 
@@ -154,7 +176,48 @@ document.addEventListener('DOMContentLoaded', function () {
   // Header transparente sobre el hero: solo corre si la página tiene
   // hero (hoy, solo el home).
   initHeaderHero();
+
+  // Cursor personalizado (círculo verde/crema según la zona).
+  initCursor();
 });
+
+/* ==========================================================
+   Cursor personalizado
+   - Círculo fijo que sigue al mouse, oscuro (var(--tinta)) por defecto.
+   - Sobre las zonas ya tratadas como "fondo oscuro" en el resto del
+     sitio (hero, bandas de categorías, bloque salvia de
+     personalizados) pasa a claro (var(--crema)) para seguir
+     contrastando. Mismos selectores que ya usan texto claro por el
+     motivo inverso — no una lista nueva a mantener por separado.
+   - Más grande sobre cualquier cosa clickeable (links, botones, el
+     logo, el botón de volver arriba), para diferenciarlo de las
+     zonas puramente decorativas.
+   - Solo corre en dispositivos con mouse (ver también el
+     @media (hover:hover) en estilos.css, que es lo que realmente
+     oculta el cursor nativo y muestra el punto).
+   ========================================================== */
+function initCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const ZONA_CLARA = '.hero, .categoria, .personalizados-texto';
+  // .logo cubre tanto el <h1> de texto como el <span class="logo logo-mark">
+  // del ícono mobile, así que no hace falta listar los dos por separado.
+  const CLICKEABLE = 'a, button, .footer-logo, .logo';
+
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  dot.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(dot);
+
+  window.addEventListener('mousemove', (event) => {
+    dot.classList.add('cursor-visible');
+    dot.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(-50%, -50%)`;
+
+    const target = document.elementFromPoint(event.clientX, event.clientY);
+    dot.classList.toggle('cursor-claro', !!(target && target.closest(ZONA_CLARA)));
+    dot.classList.toggle('cursor-clickable', !!(target && target.closest(CLICKEABLE)));
+  }, { passive: true });
+}
 
 /* ==========================================================
    Header transparente sobre el hero (solo home)
