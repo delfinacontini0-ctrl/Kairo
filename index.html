@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Esta línea hace que la web se adapte al ancho del celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAIRO</title>
+
+  <!-- Las tipografías (Rizoma y Albert Sans) ahora se cargan
+       desde la carpeta fonts/ del proyecto, vía @font-face en el CSS -->
+
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+<body class="pagina-home">
+
+  <!-- ============ HEADER ============ -->
+  <header class="header header-entrada">
+    <h1 class="logo">KAIRO</h1>
+    <img src="svg/logo.svg" alt="KAIRO logo" class="logo logo-mark" width="36" height="36">
+    <button class="btn-menu" aria-expanded="false" aria-label="Abrir menú">
+      <img src="svg/hamburguesa.svg" alt="" class="hamburger-icon" aria-hidden="true">
+    </button>
+    <nav class="nav-header" aria-label="Navegación principal">
+      <a href="collares.html">Collares</a>
+      <a href="aros.html">Aros</a>
+      <a href="pulseras.html">Pulseras</a>
+      <a href="anillos.html">Anillos</a>
+    </nav>
+  </header>
+
+  <!-- ============ HERO (foto principal rotativa) ============ -->
+  <!-- El id="foto-principal" es el "nombre" con el que JavaScript
+       va a encontrar esta imagen para ir cambiándola -->
+  <section class="hero">
+    <img id="foto-principal" src="img/principal1.png" alt="Bijouterie artesanal KAIRO">
+  </section>
+
+  <!-- ============ INTRO ============ -->
+  <section class="intro">
+    <h2 class="intro-titulo">Momento<br>oportuno</h2>
+    <p class="intro-texto">
+      KAIRO es bijouterie artesanal. Cada pieza está hecha a mano,
+      mostacilla por mostacilla. Pensada para acompañarte en cada momento.
+    </p>
+  </section>
+
+  <!-- ============ CATEGORÍAS ============ -->
+  <!-- Cada banda es un link a la página propia de esa categoría -->
+  <section class="categorias">
+
+    <a class="categoria" href="collares.html">
+      <img src="img/collares.png" alt="Collar artesanal de flores">
+      <span class="categoria-nombre">Collares</span>
+    </a>
+
+    <a class="categoria" href="aros.html">
+      <img src="img/aros.png" alt="Aros artesanales de mostacillas">
+      <span class="categoria-nombre">Aros</span>
+    </a>
+
+    <a class="categoria" href="pulseras.html">
+      <img src="img/pulseras.png" alt="Pulseras artesanales apiladas">
+      <span class="categoria-nombre">Pulseras</span>
+    </a>
+
+    <a class="categoria" href="anillos.html">
+      <img src="img/anillos.png" alt="Anillos artesanales de mostacillas">
+      <span class="categoria-nombre">Anillos</span>
+    </a>
+
+  </section>
+
+  <!-- ============ PERSONALIZADOS ============ -->
+  <section class="personalizados">
+    <div class="personalizados-texto">
+      <p>Hacemos piezas para eventos y vestimentas especiales personalizadas. Traé tu ropa y elegimos la mejor piedra para crear la combinación ideal.</p>
+    </div>
+    <div class="personalizados-imagen">
+      <!-- Exportá desde Figma como img/personalizados.png -->
+      <img src="img/personalizados.png" alt="Colgante artesanal en forma de pluma">
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-datos">
+      <p>Tigre, Buenos Aires</p>
+      <p><a href="https://www.instagram.com/kairo.ar" target="_blank" rel="noopener">@kairo.ar</a></p>
+      <p>+54 9 11 4470 9947</p>
+    </div>
+
+    <!-- El circulito orgánico del logo, dibujado en SVG -->
+    <div class="footer-logo" role="button" tabindex="0" aria-label="Volver arriba">
+      <img src="svg/logo.svg" alt="KAIRO logo" class="footer-logo-img" width="64" height="64">
+    </div>
+
+        <!-- ⚠️ IMPORTANTE: reemplazá 54911XXXXXXXX por tu naúmero real,
+          con código de país (54), el 9 de celular, y SIN el 15 -->
+         <a class="footer-contacto"
+           href="https://wa.me/5491144709947?text=Hola!%20Vi%20la%20web%20de%20KAIRO%20y%20quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">
+       Contactanos
+        </a>
+
+    <p class="footer-copy">© 2026 KAIRO BIJOUTERIE</p>
+  </footer>
+
+  <!-- El JavaScript se carga al final, cuando toda la página ya existe -->
+  <!-- Botón volver arriba (invisible hasta hacer scroll) -->
+  <button id="back-to-top" aria-label="Volver arriba">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 6 L6 12 M12 6 L18 12" stroke="#5C6D52" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+  </button>
+
+  <script src="js/script.js"></script>
+
+</body>
+</html>

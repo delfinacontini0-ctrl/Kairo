@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collares — KAIRO</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <h1 class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">KAIRO</h1>
+    <img src="svg/logo.svg" alt="KAIRO logo" class="logo logo-mark" width="36" height="36" onclick="window.location.href='index.html'" style="cursor: pointer;">
+    <button class="btn-menu" aria-expanded="false" aria-label="Abrir menú">
+      <img src="svg/hamburguesa.svg" alt="" class="hamburger-icon" aria-hidden="true">
+    </button>
+    <nav class="nav-header" aria-label="Navegación principal">
+      <a href="collares.html">Collares</a>
+      <a href="aros.html">Aros</a>
+      <a href="pulseras.html">Pulseras</a>
+      <a href="anillos.html">Anillos</a>
+    </nav>
+  </header>
+
+  <main class="collares-main">
+    <!-- ============ TÍTULO CON CONTADOR ============ -->
+    <section class="collares-header">
+      <div class="collares-header-grid">
+        <div class="collares-label">Pieza</div>
+        <h2 class="collares-titulo">Collares</h2>
+        <div class="collares-contador" id="pieza-contador">01</div>
+      </div>
+    </section>
+
+    <!-- ============ DESCRIPCIÓN ============ -->
+    <div class="collares-descripcion">
+      <p>Descubrí la variedad de collares. Cada uno puede ser personalizado con las piedras que cada una desee.</p>
+    </div>
+
+    <!-- ============ GALERÍA HORIZONTAL ============ -->
+    <section class="collares-galeria-container">
+      <div class="collares-galeria" id="galeria-collares" data-producto="collar" data-articulo="el">
+        <img src="img/collares/collar1.png" alt="Collar 1" class="galeria-pieza">
+        <img src="img/collares/collar2.png" alt="Collar 2" class="galeria-pieza">
+        <img src="img/collares/collar3.png" alt="Collar 3" class="galeria-pieza">
+        <img src="img/collares/collar4.png" alt="Collar 4" class="galeria-pieza">
+        <img src="img/collares/collar5.png" alt="Collar 5" class="galeria-pieza">
+        <img src="img/collares/collar6.png" alt="Collar 6" class="galeria-pieza">
+        <img src="img/collares/collar7.png" alt="Collar 7" class="galeria-pieza">
+        <img src="img/collares/collar8.png" alt="Collar 8" class="galeria-pieza">
+      </div>
+    </section>
+
+    <!-- ============ CTA (CONSULTAR) ============ -->
+    <section class="collares-cta">
+      <a id="consultar-link" class="consultar-pieza" href="https://wa.me/5491144709947?text=Hola!%20Quiero%20consultar%20por%20el%20collar%2001" target="_blank" rel="noopener">
+        Consultar por esta pieza
+      </a>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-datos">
+      <p>Tigre, Buenos Aires</p>
+      <p><a href="https://www.instagram.com/kairo.ar" target="_blank" rel="noopener">@kairo.ar</a></p>
+      <p>+54 9 11 4470 9947</p>
+    </div>
+
+    <div class="footer-logo" role="button" tabindex="0" aria-label="Volver arriba">
+      <img src="svg/logo.svg" alt="KAIRO logo" class="footer-logo-img" width="64" height="64">
+    </div>
+
+    <a class="footer-contacto" href="https://wa.me/5491144709947?text=Hola!%20Vi%20la%20web%20de%20KAIRO%20y%20quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">
+      Contactanos
+    </a>
+
+    <p class="footer-copy">© 2026 KAIRO BIJOUTERIE</p>
+  </footer>
+
+  <!-- Botón volver arriba -->
+  <button id="back-to-top" aria-label="Volver arriba">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 6 L6 12 M12 6 L18 12" stroke="#5C6D52" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+  </button>
+
+  <script src="js/script.js"></script>
+
+</body>
+</html>

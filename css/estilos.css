@@ -1,0 +1,971 @@
+/* ==========================================================
+   KAIRO — Hoja de estilos
+   Paleta y tipografía tomadas de tu diseño en Figma.
+   Cambiá los valores de :root y se actualiza toda la web.
+   ========================================================== */
+
+/* ---------- Fuentes propias ----------
+   @font-face le dice al navegador: "esta fuente no la busques
+   en internet, cargala desde la carpeta fonts/ del proyecto" */
+
+@font-face {
+  font-family: 'Rizoma';
+  src: url('../fonts/rizoma/Rizoma.ttf');
+  font-weight: 400;
+  font-display: swap; /* muestra texto con fuente de respaldo mientras carga */
+}
+
+@font-face {
+  font-family: 'Albert Sans';
+  src: url('../fonts/albert-sans/albertsans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Albert Sans';
+  src: url('../fonts/albert-sans/albertsans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --crema: #EBEBDD;        /* fondo general */
+  --salvia: #8D9488;       /* bloque verde y acentos */
+  --verde: #5C6D52;        /* verde oscuro: textos y detalles */
+  --arena: #AD9E79;        /* dorado/arena: acento opcional */
+  --tinta: #5C6D52;        /* color de los textos (el verde oscuro) */
+  --blanco: #F6F5EF;       /* textos sobre fotos y fondo verde */
+
+  --serif: 'Rizoma', serif;              /* títulos (tu fuente de marca) */
+  --sans: 'Albert Sans', sans-serif;     /* textos */
+  --texto-cuerpo: 0.85rem;               /* tamaño de texto general del sitio */
+  --suave: cubic-bezier(0.22, 1, 0.36, 1); /* movimiento más orgánico y fluido */
+}
+
+/* ---------- Reseteo básico ---------- */
+/* Quita márgenes por defecto del navegador para partir de cero */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--crema);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-weight: 300;
+  padding-top: 88px;
+}
+
+/* En el home el header flota transparente sobre el hero (ver más abajo),
+   así que el hero arranca desde el borde de la pantalla en vez de quedar
+   empujado por los 88px que el header reserva en el resto del sitio. */
+body.pagina-home {
+  padding-top: 0;
+}
+
+/* Las imágenes nunca se desbordan de su contenedor */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 8vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--crema);
+  z-index: 1000;
+}
+
+/* Botón hamburguesa (oculto en desktop, visible en mobile) */
+.btn-menu {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.btn-menu .line {
+  display: none;
+}
+.btn-menu .hamburger-icon {
+  display: block;
+  width: 24px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.18s var(--suave), filter 0.35s var(--suave);
+  transform: translateZ(0);
+}
+.btn-menu.open .hamburger-icon {
+  transform: rotate(90deg);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.7rem;
+  /* Este espaciado entre letras es la firma de tu marca */
+  letter-spacing: -0.9em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.35s var(--suave);
+}
+
+/* SVG mark for mobile header (hidden on desktop) */
+.logo-mark {
+  display: none;
+  width: 44px;
+  height: 44px;
+  transition: filter 0.35s var(--suave);
+}
+
+.nav-header {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.nav-header a {
+  color: var(--tinta);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  transition: opacity 0.3s var(--suave), color 0.35s var(--suave);
+}
+
+.nav-header a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: calc(100% - 0.16em);
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s var(--suave);
+}
+
+.nav-header a:hover {
+  opacity: 0.72;
+}
+
+.nav-header a:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; /* para el degradado y, en el home, para que el header flote encima */
+}
+
+.hero img {
+  width: 100%;
+  height: auto;              /* mostrar la imagen completa sin recorte */
+  /* Eliminado object-fit y altura fija para que la foto no se recorte */
+  background-color: #C9C9C0;
+  filter: saturate(0.6);
+  display: block;
+}
+
+/* Degradado sutil arriba del hero (solo home, header transparente encima)
+   para que el logo y el nav en blanco se sigan leyendo aunque la foto
+   rotativa de turno sea clara. El img no tiene position, así que este
+   pseudo-elemento posicionado ya pinta por encima sin necesidad de z-index. */
+.pagina-home .hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+
+/* ---------- Header transparente sobre el hero (solo home) ----------
+   El resto de la web usa .header tal cual (fondo crema fijo). Acá,
+   arranca transparente con textos claros para leerse sobre la foto, y
+   script.js agrega .header-solido (vía IntersectionObserver sobre el
+   hero) apenas el hero deja de estar a la vista — ahí pasa a fondo
+   crema y textos oscuros, igual que el header de siempre. */
+.pagina-home .header {
+  background-color: transparent;
+  transition: background-color 0.35s var(--suave);
+}
+
+.pagina-home .header.header-solido {
+  background-color: var(--crema);
+}
+
+/* Crema (var(--crema), #EBEBDD) solo en el estado transparente y con el
+   menú cerrado: si el overlay mobile está abierto, su fondo es crema y
+   estos elementos (el logo-mark y la hamburguesa, que quedan por encima
+   del overlay) necesitan volver a verse oscuros — igual que si el header
+   ya es sólido. */
+.pagina-home .header:not(.header-solido):not(.nav-open) .logo,
+.pagina-home .header:not(.header-solido):not(.nav-open) .nav-header a {
+  color: var(--crema);
+}
+
+.pagina-home .header:not(.header-solido):not(.nav-open) .logo-mark,
+.pagina-home .header:not(.header-solido):not(.nav-open) .hamburger-icon {
+  /* Los svg son monocromos (#5C6D52 fijo en el archivo), así que no se
+     pueden recolorear con color/currentColor. invert(92%) sobre negro
+     puro (brightness(0) primero) da rgb(235,235,235) — el mismo tono
+     que #EBEBDD salvo 14/255 en el canal azul, imperceptible en un
+     ícono chico; evita duplicar cada svg en una versión clara. */
+  filter: brightness(0) invert(92%);
+}
+
+/* Hover sobre la barra (solo dispositivos con mouse): mientras el header
+   sigue transparente, tomar temporalmente el aspecto sólido. Mismos
+   valores que .header-solido de arriba — no un estado nuevo, solo otro
+   disparador para el mismo look. Si el header YA es sólido por scroll,
+   esto no cambia nada (los valores coinciden, sin flicker) y la
+   transición es la misma (0.35s var(--suave)) porque ya vive declarada
+   en .header/.logo/.nav-header a/.logo-mark/.hamburger-icon. */
+@media (hover: hover) {
+  .pagina-home .header:not(.nav-open):hover {
+    background-color: var(--crema);
+  }
+
+  .pagina-home .header:not(.nav-open):hover .logo,
+  .pagina-home .header:not(.nav-open):hover .nav-header a {
+    color: var(--tinta);
+  }
+
+  .pagina-home .header:not(.nav-open):hover .logo-mark,
+  .pagina-home .header:not(.nav-open):hover .hamburger-icon {
+    filter: none;
+  }
+}
+
+/* ---------- Intro ---------- */
+.intro {
+  display: flex;                   /* pone título y texto lado a lado */
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 120px 8vw 110px;
+  margin-top: 70px;
+}
+
+.intro-titulo {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 1.7rem;
+  letter-spacing: -0.9em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+.intro-texto {
+  max-width: 300px;
+  font-size: var(--texto-cuerpo);
+  line-height: 1.7;
+  /* Mantiene el texto a la derecha pero separado sutilmente del borde */
+  margin-right: 70px; /* ajuste: ~60-80px en desktop */
+}
+
+/* ---------- Categorías ---------- */
+.categorias {
+  display: flex;
+  flex-direction: column;   /* una banda debajo de la otra */
+  gap: 34px;
+  padding: 0 8vw 90px;
+  margin-top: 80px; /* Más aire entre .intro y .categorias */
+}
+
+.categoria {
+  position: relative;        /* necesario para ubicar el nombre encima */
+  display: block;
+  overflow: hidden;
+}
+
+.categoria img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #C9C9C0; /* respaldo si falta la foto */
+  transition: transform 0.6s ease;  /* para el efecto al pasar el mouse */
+}
+
+/* Efecto sutil: la foto se agranda apenas al pasar el mouse */
+.categoria:hover img {
+  transform: scale(1.03);
+}
+
+.categoria-nombre {
+  position: absolute;              /* flota sobre la foto */
+  right: 30px;
+  bottom: 22px;
+  color: var(--blanco);
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  letter-spacing: -0.9em;
+  text-transform: uppercase;
+}
+
+/* ---------- Personalizados ---------- */
+.personalizados {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* dos columnas iguales */
+}
+
+.personalizados-texto {
+  background-color: var(--salvia);
+  color: var(--blanco);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 70px 12%;
+  font-size: var(--texto-cuerpo);
+  line-height: 1.7;
+}
+
+.personalizados-texto p {
+  max-width: 360px;
+}
+
+.personalizados-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #C9C9C0;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 70px 8vw;
+}
+
+.footer-datos {
+  font-size: 0.8rem;
+  line-height: 2.1;
+  justify-self: start;
+}
+
+.footer-logo img,
+.footer-logo-img {
+  width: 64px;
+  height: 64px;
+  display: block;
+  color: var(--salvia);
+}
+
+.footer-logo {
+  justify-self: center;
+  cursor: pointer;
+}
+
+.footer-contacto {
+  justify-self: end;
+}
+
+/* Línea de copyright: una sola regla, compartida por las 5 páginas.
+   grid-column la extiende a lo largo de las 3 columnas del footer
+   en desktop; en mobile el footer pasa a flex (ver media query) y
+   grid-column se ignora solo, sin necesidad de otra regla. */
+.footer-copy {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 48px;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--tinta);
+  opacity: 0.6;
+}
+
+.footer-contacto {
+  color: var(--tinta);
+  text-decoration: none;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: -0.9em;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  /* eliminamos border-bottom y margen negativo; usamos pseudo-elemento para subrayado */
+  transition: color 0.2s var(--suave);
+}
+
+.footer-contacto::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  width: calc(100% - 0.9em); /* descuenta el espacio fantasma equivalente al letter-spacing */
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s var(--suave);
+}
+.footer-contacto:hover::after {
+  opacity: 1;
+}
+
+/* Links dentro del bloque de datos del footer (ej: Instagram) */
+.footer-datos a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.12s ease;
+}
+.footer-datos a:hover {
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+/* ---------- Aparición sutil (reveal) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.72s ease, transform 0.72s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Botón volver arriba */
+#back-to-top {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s ease, visibility 0.28s ease;
+  cursor: pointer;
+}
+#back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+#back-to-top svg {
+  width: 46px;
+  height: 46px;
+}
+#back-to-top:hover { opacity: 0.85; }
+
+@media (prefers-reduced-motion: reduce) {
+  #back-to-top { transition: none !important; }
+}
+
+/* ---------- PÁGINA COLLARES ---------- */
+
+.collares-main {
+  height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.collares-header {
+  padding: 28px 8vw 8px;
+}
+
+.collares-header-grid {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 60px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.collares-label {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  /* centered via flex parent; no grid-specific alignment needed */
+}
+
+.collares-titulo {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: -0.9em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  text-align: center;
+}
+
+.collares-contador {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  transition: opacity 0.3s ease;
+  min-width: 48px; /* evita que cambie el ancho al pasar de 01 a 08 */
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.collares-descripcion {
+  display: flex;
+  justify-content: center;
+  padding: 0 8vw 16px;
+}
+
+.collares-descripcion p {
+  max-width: 420px;
+  font-size: var(--texto-cuerpo);
+  line-height: 1.7;
+  text-align: center;
+  color: var(--tinta);
+}
+
+/* Contenedor de galería con scroll horizontal */
+.collares-galeria-container {
+  padding: 0 8vw 16px;
+  margin-top: auto; /* empuja la galería/link hacia abajo dentro del contenedor flex */
+}
+
+.collares-galeria {
+  display: flex;
+  align-items: flex-end;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  gap: 12px;
+  scroll-behavior: smooth;
+  padding-bottom: 12px;
+  /* padding lateral para centrar primera/última pieza: mitad del ancho máximo (380px/2 = 190px) */
+  padding-left: calc(40vw - 190px);
+  padding-right: calc(40vw - 190px);
+  padding-top: 8px; /* menos espacio arriba de las fotos ahora que la galería baja */
+  /* Ocultar scrollbar */
+  scrollbar-width: none;
+}
+
+.collares-galeria::-webkit-scrollbar {
+  display: none;
+}
+
+.galeria-pieza {
+  flex-shrink: 0;
+  width: 280px;
+  height: 400px;
+  object-fit: cover;
+  scroll-snap-align: center;
+  background-color: #C9C9C0;
+  border-radius: 2px;
+  transform-origin: bottom center;
+  transform: scale(0.85);
+  opacity: 0.7;
+  transition: transform 0.45s var(--suave), opacity 0.45s var(--suave);
+}
+
+.galeria-pieza.highlighted {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* CTA */
+.collares-cta {
+  display: flex;
+  justify-content: center;
+  padding: 12px 8vw 40px; /* margen inferior reducido para mantener todo dentro de 100vh */
+}
+
+.consultar-pieza {
+  color: var(--tinta);
+  text-decoration: none;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: -0.9em;
+  word-spacing: 1.2em;
+  text-transform: uppercase;
+  white-space: normal;
+  position: relative;
+  display: inline-block;
+  transition: color 0.12s ease;
+}
+
+.consultar-pieza::after {
+  content: '';
+  position: absolute;
+  /* El cuadro del link ya queda ajustado a la última letra (sin espacio
+     fantasma de letter-spacing que descontar), así que "right: 0" alinea
+     el final de la línea con la A de PIEZA. En el arranque, la C es una
+     letra redonda: su curva se recorta bastante respecto del borde del
+     cuadro a la altura del subrayado, así que un left en 0 se ve corrido
+     hacia la izquierda — este pequeño offset la ajusta ópticamente a la C. */
+  left: 0.5em;
+  right: -0.5em;
+  bottom: -4px;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.consultar-pieza:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Animación de entrada (páginas de categoría) ----------
+   Comparte esta única implementación collares.html / aros.html /
+   pulseras.html / anillos.html, porque las cuatro reutilizan las
+   mismas clases (.collares-header-grid, .collares-descripcion,
+   .galeria-pieza, .collares-cta). Es animation con @keyframes (no
+   transition + IntersectionObserver) porque corre una sola vez al
+   cargar, con todo ya en el viewport — no depende de scroll. */
+
+@keyframes entrada-fila {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* La galería anima transform, y transform ya lo usa el resaltado
+   de scroll (scale 0.85/1 según .highlighted) — dos keyframes,
+   uno por estado final, para no pisar esa escala en cada caso. */
+@keyframes entrada-pieza {
+  from { opacity: 0; transform: translateY(15px) scale(0.85); }
+  to   { opacity: 0.7; transform: translateY(0) scale(0.85); }
+}
+@keyframes entrada-pieza-highlighted {
+  from { opacity: 0; transform: translateY(15px) scale(1); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.collares-header-grid {
+  animation: entrada-fila 0.6s var(--suave) both;
+}
+
+.collares-descripcion {
+  animation: entrada-fila 0.6s var(--suave) both;
+  animation-delay: 120ms;
+}
+
+.galeria-pieza {
+  animation-name: entrada-pieza;
+  animation-duration: 0.6s;
+  animation-timing-function: var(--suave);
+  animation-fill-mode: both;
+  animation-delay: 240ms; /* pieza 1: 120ms (texto) + 120ms = 240ms después del título */
+}
+
+.galeria-pieza.highlighted {
+  animation-name: entrada-pieza-highlighted;
+}
+
+/* Una vez que la animación de entrada terminó, script.js agrega esta
+   clase (evento "animationend") para desactivarla del todo. Sin esto,
+   como .highlighted se prende y apaga con cada scroll de la galería,
+   el navegador detecta el cambio de animation-name (entre las dos
+   de arriba) y la vuelve a arrancar desde 0 en cada foto que pasa a
+   estar destacada — la entrada tiene que pasar una sola vez, al cargar. */
+.galeria-pieza.entrada-lista {
+  animation: none;
+}
+
+/* Escalonado de izquierda a derecha, 70ms entre cada foto */
+.galeria-pieza:nth-child(2) { animation-delay: 310ms; }
+.galeria-pieza:nth-child(3) { animation-delay: 380ms; }
+.galeria-pieza:nth-child(4) { animation-delay: 450ms; }
+.galeria-pieza:nth-child(5) { animation-delay: 520ms; }
+.galeria-pieza:nth-child(6) { animation-delay: 590ms; }
+.galeria-pieza:nth-child(7) { animation-delay: 660ms; }
+.galeria-pieza:nth-child(8) { animation-delay: 730ms; }
+
+.collares-cta {
+  animation: entrada-fila 0.6s var(--suave) both;
+  animation-delay: 360ms; /* 120ms después de que arranca la galería (240ms) */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collares-header-grid,
+  .collares-descripcion,
+  .galeria-pieza,
+  .collares-cta {
+    animation: none !important;
+  }
+}
+
+/* ---------- Animación de entrada (home) ----------
+   Mismo @keyframes entrada-fila de arriba, misma curva y duración
+   — coherente con las páginas de categoría, sin duplicar CSS.
+   .header-entrada se pone solo en el <header> de index.html: el
+   header (.header) es compartido por las 5 páginas y las de
+   categoría no deben animarlo. .hero y .intro son exclusivas de
+   index.html, así que van directo por su clase.
+   Las bandas de .categorias y .personalizados NO llevan esta
+   animación: siguen con su propio sistema de aparición por scroll
+   (.reveal/.visible + IntersectionObserver en script.js), que no
+   se toca acá y no se pisa con esto porque son clases distintas. */
+.header-entrada {
+  animation: entrada-fila 0.6s var(--suave) both;
+}
+
+.hero {
+  animation: entrada-fila 0.6s var(--suave) both;
+  animation-delay: 120ms;
+}
+
+.intro {
+  animation: entrada-fila 0.6s var(--suave) both;
+  animation-delay: 240ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-entrada,
+  .hero,
+  .intro {
+    animation: none !important;
+  }
+
+  .pagina-home .header,
+  .pagina-home .header .logo,
+  .pagina-home .header .logo-mark,
+  .pagina-home .header .nav-header a,
+  .pagina-home .header .hamburger-icon {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================
+   CELULAR — todo lo de acá abajo se aplica solo
+   cuando la pantalla mide 700px o menos
+   ========================================================== */
+@media (max-width: 700px) {
+
+  /* Header mobile: logo a la izquierda, hamburguesa a la derecha */
+  .header {
+    flex-direction: row;
+    gap: 8px;
+    padding: 18px 8vw;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Mostrar botón hamburguesa */
+  .btn-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* show svg mark and hide text logo in mobile */
+  .logo { display: none; }
+  .logo-mark { display: inline-block; width: 44px; height: 44px; }
+
+  /* hamburger icon size for mobile */
+  .btn-menu .hamburger-icon {
+    font-size: 28px;
+    font-weight: 200;
+  }
+  /* Full-screen overlay menu on mobile */
+  .nav-header {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: var(--crema);
+    padding: 0;
+    border: 0;
+    z-index: 1400;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.35s var(--suave), transform 0.35s var(--suave);
+  }
+
+  /* ensure hamburger sits above the overlay */
+  .btn-menu { z-index: 1500; }
+
+  .header.nav-open .nav-header {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  /* menu links style & subtle staggered reveal */
+  .nav-header a {
+    font-family: var(--sans); /* Albert Sans */
+    font-size: 1.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tinta);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s var(--suave), transform 0.35s var(--suave);
+  }
+
+  .header.nav-open .nav-header a {
+    opacity: 1;
+    transform: none;
+  }
+
+  .header.nav-open .nav-header a:nth-child(1) { transition-delay: 0.04s; }
+  .header.nav-open .nav-header a:nth-child(2) { transition-delay: 0.09s; }
+  .header.nav-open .nav-header a:nth-child(3) { transition-delay: 0.14s; }
+  .header.nav-open .nav-header a:nth-child(4) { transition-delay: 0.19s; }
+
+  /* cuando está visible, centrar los links en columna */
+  .header.nav-open .nav-header {
+    align-items: center;
+  }
+
+  .nav-header a {
+    font-size: 1.35rem;
+    letter-spacing: 0.12em;
+  }
+
+  .intro {
+    flex-direction: column;
+    padding: 90px 8vw 80px;
+    margin-top: 40px;
+  }
+
+  .intro-texto {
+    margin-right: 0; /* sin margen extra en mobile */
+  }
+
+  /* Personalizados también se apila */
+  .personalizados {
+    grid-template-columns: 1fr;
+  }
+
+  .personalizados-imagen img {
+    height: 320px;
+  }
+
+  /* El footer se apila y centra */
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    text-align: center;
+  }
+
+  .footer-datos,
+  .footer-logo,
+  .footer-contacto {
+    justify-self: auto;
+  }
+
+  .footer-logo {
+    margin: 0 auto;
+  }
+
+  .categoria img {
+    height: 180px;
+  }
+
+  #foto-principal {
+    height: 70vh;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Collares mobile */
+  .collares-header {
+    padding: 50px 0 40px;
+  }
+
+  .collares-header-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: none;
+    padding: 0 4vw;
+    flex-wrap: nowrap;
+  }
+
+  .collares-label {
+    justify-self: auto;
+  }
+
+  .collares-titulo {
+    font-size: 1.4rem;
+    white-space: nowrap;
+  }
+
+  .collares-contador {
+    justify-self: auto;
+  }
+
+  .collares-descripcion {
+    padding: 0 8vw 40px;
+  }
+
+  .collares-descripcion p {
+    font-size: var(--texto-cuerpo);
+  }
+
+  .collares-galeria {
+    gap: 8px;
+    /* mitad del ancho mobile: (alto_mobile 340px * 4/5 = 272px) => /2 = 136px */
+    padding-left: calc(50vw - 136px);
+    padding-right: calc(50vw - 136px);
+    padding-top: 28px;
+    align-items: flex-end;
+    overflow-y: visible;
+  }
+
+  .galeria-pieza {
+    aspect-ratio: 4 / 5;
+    height: 340px;
+    width: auto;
+  }
+
+  .collares-cta {
+    padding: 30px 8vw 60px;
+  }
+
+  .consultar-pieza {
+    font-size: 0.9rem;
+  }
+
+}
