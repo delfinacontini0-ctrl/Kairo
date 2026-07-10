@@ -976,6 +976,14 @@ img {
     margin-top: 40px;
   }
 
+  /* El letter-spacing:-0.9em del título deja la "M" ópticamente
+     corrida hacia la derecha respecto del párrafo de abajo (que no
+     tiene ese letter-spacing) — se nota porque acá quedan uno debajo
+     del otro; en desktop van lado a lado y no hace falta. */
+  .intro-titulo {
+    margin-left: -0.55em;
+  }
+
   .intro-texto {
     margin-right: 0; /* sin margen extra en mobile */
   }
