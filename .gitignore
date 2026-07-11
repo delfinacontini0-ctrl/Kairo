@@ -3,3 +3,6 @@
 
 # Config local de Claude Code (permisos y rutas de esta máquina)
 .claude/
+
+# Fotos originales sin comprimir (respaldo local, no se despliega)
+img-originales/

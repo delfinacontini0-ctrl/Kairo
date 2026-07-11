@@ -8,9 +8,9 @@
 //    object-fit: cover). Para agregar, quitar o reencuadrar una foto, editá
 //    solo este objeto.
 const fotos = [
-  { src: "img/principal1.png", posicion: "center" },
-  { src: "img/principal2.png", posicion: "center" },
-  { src: "img/principal3.png", posicion: "25% center" }
+  { src: "img/principal1.webp", posicion: "center" },
+  { src: "img/principal2.webp", posicion: "center" },
+  { src: "img/principal3.webp", posicion: "25% center" }
 ];
 
 // 2) Cada cuánto cambia, en milisegundos (1000 = 1 segundo).
