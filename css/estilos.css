@@ -693,17 +693,19 @@ img {
   font-family: var(--serif);
   font-size: 1rem;
   letter-spacing: -0.9em;
-  word-spacing: 1.2em;
   text-transform: uppercase;
-  white-space: normal;
-  /* Con white-space:normal el texto puede pasar a dos líneas en mobile;
-     sin esto, la caja queda centrada por el flex del padre pero cada
-     línea se alinea a la izquierda dentro de esa caja. Una sola regla,
-     vale para las 4 páginas y para cualquier ancho. */
-  text-align: center;
   position: relative;
-  display: inline-block;
   transition: color 0.12s ease;
+  /* Cada palabra es un <span> propio (ver HTML) y el espacio entre
+     palabras lo pone el gap del flex, no word-spacing. word-spacing
+     combinado con un letter-spacing tan negativo lo calculan distinto
+     Chrome y Safari — en Safari/iOS el espacio a cada lado de "POR"
+     quedaba desparejo. gap es geometría pura, igual en todos lados. */
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 0.55em;
+  row-gap: 6px;
 }
 
 .consultar-pieza::after {
