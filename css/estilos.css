@@ -1101,6 +1101,15 @@ img {
     font-size: var(--texto-cuerpo);
   }
 
+  /* Sin el padding lateral de 8vw que trae .collares-galeria-container en
+     desktop: en mobile achicaba el visor de scroll casi al ancho de una
+     sola pieza y no dejaba asomar la siguiente (ver padding-left/right
+     de .collares-galeria abajo, pensado para centrar sobre el ancho
+     completo del viewport, no sobre un contenedor ya recortado). */
+  .collares-galeria-container {
+    padding: 0 0 16px;
+  }
+
   .collares-galeria {
     gap: 8px;
     /* mitad del ancho mobile: (alto_mobile 340px * 4/5 = 272px) => /2 = 136px */
