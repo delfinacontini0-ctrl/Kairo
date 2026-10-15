@@ -5,14 +5,17 @@
 
 // 1) La lista de fotos que van a ir rotando, con el encuadre (object-position)
 //    que le corresponde a cada una en mobile (donde la foto se recorta con
-//    object-fit: cover). srcset trae la versión chica (900w) para que el
-//    celular no descargue la de 3840px pensada para pantallas de
-//    escritorio anchas. Para agregar, quitar o reencuadrar una foto,
-//    editá solo este objeto.
+//    object-fit: cover). En mobile usamos directamente el archivo chico
+//    (900w) para no bajar el de 3840px pensado para pantallas de
+//    escritorio anchas — elegido una sola vez acá, no vía srcset, porque
+//    Safari/iOS no siempre vuelve a evaluar bien un srcset reescrito por
+//    JS en cada rotación y la foto se queda pegada en la primera. Para
+//    agregar, quitar o reencuadrar una foto, editá solo este objeto.
+const esMobile = window.matchMedia("(max-width: 700px)").matches;
 const fotos = [
-  { src: "img/principal1.webp", srcset: "img/principal1-sm.webp 900w, img/principal1.webp 3840w", posicion: "center" },
-  { src: "img/principal2.webp", srcset: "img/principal2-sm.webp 900w, img/principal2.webp 3840w", posicion: "center" },
-  { src: "img/principal3.webp", srcset: "img/principal3-sm.webp 900w, img/principal3.webp 3840w", posicion: "25% center" }
+  { src: esMobile ? "img/principal1-sm.webp" : "img/principal1.webp", posicion: "center" },
+  { src: esMobile ? "img/principal2-sm.webp" : "img/principal2.webp", posicion: "center" },
+  { src: esMobile ? "img/principal3-sm.webp" : "img/principal3.webp", posicion: "25% center" }
 ];
 
 // 2) Cada cuánto cambia, en milisegundos (1000 = 1 segundo).
@@ -25,10 +28,13 @@ const imagen = document.getElementById("foto-principal");
 // 4) Un contador para saber qué foto toca mostrar
 let actual = 0;
 
-// 5) Aplica src + srcset + encuadre de la foto actual a la imagen del hero
+// 5) Aplica src + encuadre de la foto actual a la imagen del hero.
+//    Sacamos el srcset del HTML (solo servía para elegir la primera foto
+//    antes de que corra este script) para que todas las rotaciones usen
+//    el mismo mecanismo simple de siempre.
 function mostrarFoto(index) {
+  imagen.removeAttribute("srcset");
   imagen.src = fotos[index].src;
-  imagen.srcset = fotos[index].srcset;
   imagen.style.objectPosition = fotos[index].posicion;
 }
 
