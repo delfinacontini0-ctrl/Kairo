@@ -5,12 +5,14 @@
 
 // 1) La lista de fotos que van a ir rotando, con el encuadre (object-position)
 //    que le corresponde a cada una en mobile (donde la foto se recorta con
-//    object-fit: cover). Para agregar, quitar o reencuadrar una foto, editá
-//    solo este objeto.
+//    object-fit: cover). srcset trae la versión chica (900w) para que el
+//    celular no descargue la de 3840px pensada para pantallas de
+//    escritorio anchas. Para agregar, quitar o reencuadrar una foto,
+//    editá solo este objeto.
 const fotos = [
-  { src: "img/principal1.webp", posicion: "center" },
-  { src: "img/principal2.webp", posicion: "center" },
-  { src: "img/principal3.webp", posicion: "25% center" }
+  { src: "img/principal1.webp", srcset: "img/principal1-sm.webp 900w, img/principal1.webp 3840w", posicion: "center" },
+  { src: "img/principal2.webp", srcset: "img/principal2-sm.webp 900w, img/principal2.webp 3840w", posicion: "center" },
+  { src: "img/principal3.webp", srcset: "img/principal3-sm.webp 900w, img/principal3.webp 3840w", posicion: "25% center" }
 ];
 
 // 2) Cada cuánto cambia, en milisegundos (1000 = 1 segundo).
@@ -23,9 +25,10 @@ const imagen = document.getElementById("foto-principal");
 // 4) Un contador para saber qué foto toca mostrar
 let actual = 0;
 
-// 5) Aplica src + encuadre de la foto actual a la imagen del hero
+// 5) Aplica src + srcset + encuadre de la foto actual a la imagen del hero
 function mostrarFoto(index) {
   imagen.src = fotos[index].src;
+  imagen.srcset = fotos[index].srcset;
   imagen.style.objectPosition = fotos[index].posicion;
 }
 
