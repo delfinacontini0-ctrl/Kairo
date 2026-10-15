@@ -6,7 +6,7 @@
 // 1) La lista de fotos que van a ir rotando, con el encuadre (object-position)
 //    que le corresponde a cada una en mobile (donde la foto se recorta con
 //    object-fit: cover). En mobile usamos directamente el archivo chico
-//    (900w) para no bajar el de 3840px pensado para pantallas de
+//    (más liviano) para no bajar el de 3840px pensado para pantallas de
 //    escritorio anchas — elegido una sola vez acá, no vía srcset, porque
 //    Safari/iOS no siempre vuelve a evaluar bien un srcset reescrito por
 //    JS en cada rotación y la foto se queda pegada en la primera. Para
